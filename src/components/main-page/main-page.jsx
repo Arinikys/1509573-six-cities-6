@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from './card';
+import {useHistory} from 'react-router-dom';
+import CardsList from './cards-list';
 
 const MainPage = (props) => {
-  const {cards} = props;
+  const {offers} = props;
+  const history = useHistory();
   return (<>
     <div style={{display: `none`}}>
       <svg xmlns="http://www.w3.org/2000/svg">
@@ -30,10 +32,13 @@ const MainPage = (props) => {
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
+                  <a
+                    className="header__nav-link header__nav-link--profile"
+                    onClick={() => history.push(`/login`)}
+                  >
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                    <span className="header__login">Sign in</span>
                   </a>
                 </li>
               </ul>
@@ -100,7 +105,7 @@ const MainPage = (props) => {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {cards.map((card) => <Card key={card}/>)}
+                <CardsList offers={offers}/>
               </div>
             </section>
             <div className="cities__right-section">
@@ -115,7 +120,7 @@ const MainPage = (props) => {
 };
 
 MainPage.propTypes = {
-  cards: PropTypes.array.isRequired,
+  offers: PropTypes.array.isRequired,
 };
 
 export default MainPage;

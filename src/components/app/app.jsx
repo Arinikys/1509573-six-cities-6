@@ -8,16 +8,20 @@ import FavoritesPage from "../favorites-page/favorites-page";
 import NotFoundPage from "../not-found-page/not-found-page";
 
 const App = (props) => {
-  const {cards} = props;
+  const {offers, comments} = props;
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <MainPage cards={cards}/>
+          <MainPage offers={offers}/>
         </Route>
         <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/favorites" component={FavoritesPage} />
-        <Route exact path="/offer/:id?" component={OfferPage} />
+        <Route exact path="/favorites">
+          <FavoritesPage offers={offers}/>
+        </Route>
+        <Route exact path="/offer/:id?">
+          <OfferPage offer={offers[0]} comments={comments}/>
+        </Route>
         <Route component={NotFoundPage} />
       </Switch>
     </BrowserRouter>
@@ -25,7 +29,8 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  cards: PropTypes.array,
+  offers: PropTypes.array.isRequired,
+  comments: PropTypes.array.isRequired
 };
 
 export default App;
