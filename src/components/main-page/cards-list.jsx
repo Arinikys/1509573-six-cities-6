@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import Card from './card';
 
 const CardsList = (props) => {
-  const {offers} = props;
+  const {offers, getActiveCard} = props;
   const [activeOffer, setActiveOffer] = React.useState({});
 
   const handleCardMouseOver = (offer) => {
     setActiveOffer(offer);
+    getActiveCard(activeOffer);
   };
 
   return (<>
@@ -18,6 +19,7 @@ const CardsList = (props) => {
 
 CardsList.propTypes = {
   offers: PropTypes.array.isRequired,
+  getActiveCard: PropTypes.func.isRequired,
 };
 
 export default CardsList;

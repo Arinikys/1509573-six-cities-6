@@ -105,7 +105,7 @@ const MainPage = (props) => {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <CardsList offers={offers}/>
+                <CardsList offers={offers} getActiveCard={() => {}}/>
               </div>
             </section>
             <div className="cities__right-section">
