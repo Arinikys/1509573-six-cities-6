@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
-
-const cards = [0, 1, 2, 3, 4];
+import offers from "./mocks/offers";
+import comments from "./mocks/comments";
 
 ReactDOM.render(
     <App
-      cards={cards}
+      offers={offers}
+      comments={comments}
     />,
     document.querySelector(`#root`)
 );
