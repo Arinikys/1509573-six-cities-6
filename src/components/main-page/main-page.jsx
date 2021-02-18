@@ -2,9 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router-dom';
 import CardsList from './cards-list';
+import Map from "./map";
 
 const MainPage = (props) => {
   const {offers} = props;
+  const city = {
+    "latitude": 52.370216,
+    "longitude": 4.895168,
+    "zoom": 10
+  };
   const history = useHistory();
   return (<>
     <div style={{display: `none`}}>
@@ -109,7 +115,9 @@ const MainPage = (props) => {
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"/>
+              <section className="cities__map map">
+                <Map city={city} points={offers}/>
+              </section>
             </div>
           </div>
         </div>
