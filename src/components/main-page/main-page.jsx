@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router-dom';
-import CardsList from './cards-list';
-import Map from "./map";
+import CardsList from "../common/card-list/cards-list";
+import Map from "../common/map/map";
 
 const MainPage = (props) => {
   const {offers} = props;
