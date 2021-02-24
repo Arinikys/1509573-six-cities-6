@@ -58,9 +58,6 @@ Map.propTypes = {
     longitude: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
   }),
-  points: PropTypes.arrayOf(PropTypes.shape({
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
-  }))
+  points: PropTypes.array.isRequired,
 };
 export default Map;

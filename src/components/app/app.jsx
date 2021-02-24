@@ -20,7 +20,7 @@ const App = (props) => {
           <FavoritesPage offers={offers}/>
         </Route>
         <Route exact path="/offer/:id?">
-          <OfferPage offer={offers[0]} comments={comments}/>
+          <OfferPage offer={offers[0]} offers={offers} comments={comments}/>
         </Route>
         <Route component={NotFoundPage} />
       </Switch>
