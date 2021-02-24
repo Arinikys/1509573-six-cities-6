@@ -13,7 +13,7 @@ const App = (props) => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <MainPage offers={offers}/>
+          <MainPage />
         </Route>
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/favorites">
@@ -30,7 +30,7 @@ const App = (props) => {
 
 App.propTypes = {
   offers: PropTypes.array.isRequired,
-  comments: PropTypes.array.isRequired
+  comments: PropTypes.array.isRequired,
 };
 
 export default App;

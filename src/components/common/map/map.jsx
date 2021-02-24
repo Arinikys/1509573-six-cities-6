@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
-
 import "leaflet/dist/leaflet.css";
 
 const Map = ({city, points}) => {
@@ -39,10 +38,10 @@ const Map = ({city, points}) => {
         icon: customIcon
       })
         .addTo(mapRef.current);
-
-      return () => {
-        mapRef.current.remove();
-      };
+      //
+      // return () => {
+      //   mapRef.current.remove();
+      // };
     });
 
   }, []);
@@ -60,4 +59,5 @@ Map.propTypes = {
   }),
   points: PropTypes.array.isRequired,
 };
+
 export default Map;
