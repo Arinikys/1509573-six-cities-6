@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router-dom';
 import CardsList from "../common/card-list/cards-list";
@@ -14,6 +14,10 @@ const MainPage = (props) => {
     "longitude": 4.895168,
     "zoom": 10
   };
+
+  useEffect(() => {
+    onCitySelect(city);
+  }, []);
 
   const history = useHistory();
   return (<>
