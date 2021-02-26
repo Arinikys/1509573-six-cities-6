@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
-
 import "leaflet/dist/leaflet.css";
 
 const Map = ({city, points}) => {
@@ -24,28 +23,35 @@ const Map = ({city, points}) => {
         attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
       })
       .addTo(mapRef.current);
+  }, []);
 
+  useEffect(() => {
+
+    const markers = [];
     points.forEach((point) => {
       const customIcon = leaflet.icon({
-        iconUrl: `img/pin.svg`,
+        iconUrl: `./img/pin.svg`,
         iconSize: [30, 30]
       });
 
-      leaflet.marker({
+      const marker = leaflet.marker({
         lat: point.location.latitude,
         lng: point.location.longitude
       },
       {
         icon: customIcon
-      })
-        .addTo(mapRef.current);
-
-      return () => {
-        mapRef.current.remove();
-      };
+      });
+      markers.push(marker);
+      marker.addTo(mapRef.current);
     });
 
-  }, []);
+    return () => {
+      markers.forEach((marker) => {
+        marker.remove();
+      });
+    };
+
+  }, [points]);
 
   return (
     <div id="map" style={{height: `100%`}} ref={mapRef} />
@@ -60,4 +66,5 @@ Map.propTypes = {
   }),
   points: PropTypes.array.isRequired,
 };
+
 export default Map;
