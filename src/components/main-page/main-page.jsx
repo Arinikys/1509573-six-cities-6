@@ -1,23 +1,30 @@
 import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router-dom';
 import CardsList from "../common/card-list/cards-list";
 import Map from "../common/map/map";
+import LoadingScreen from "../loading-screen/loading-screen";
 import CitiesList from "../common/cities-list/cities-list";
-import {connect} from 'react-redux';
 import {ActionCreator} from "../../store/action";
+import {fetchOffersList} from "../../store/api-actions";
 
 const MainPage = (props) => {
-  const {offers, onCitySelect, city} = props;
-  const cityCord = {
-    "latitude": 52.370216,
-    "longitude": 4.895168,
-    "zoom": 10
-  };
+  const {offers, onCitySelect, city, isDataLoaded, onLoadData} = props;
 
   useEffect(() => {
-    onCitySelect(city);
-  }, []);
+    if (isDataLoaded) {
+      onCitySelect(city);
+    } else {
+      onLoadData();
+    }
+  }, [isDataLoaded]);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   const history = useHistory();
   return (<>
@@ -93,7 +100,7 @@ const MainPage = (props) => {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={cityCord} points={offers}/>
+                <Map points={offers}/>
               </section>
             </div>
           </div>
@@ -108,17 +115,23 @@ MainPage.propTypes = {
   offers: PropTypes.array.isRequired,
   onCitySelect: PropTypes.func.isRequired,
   city: PropTypes.string.isRequired,
+  isDataLoaded: PropTypes.bool.isRequired,
+  onLoadData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   offers: state.offers,
   city: state.city,
+  isDataLoaded: state.isDataLoaded,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onCitySelect(city) {
     dispatch(ActionCreator.changeCity(city));
     dispatch(ActionCreator.filteredOffers());
+  },
+  onLoadData() {
+    dispatch(fetchOffersList());
   },
 });
 

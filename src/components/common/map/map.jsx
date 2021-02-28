@@ -3,9 +3,11 @@ import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import "leaflet/dist/leaflet.css";
 
-const Map = ({city, points}) => {
+const Map = ({points}) => {
 
   const mapRef = useRef();
+
+  const city = points[0].city.location;
 
   useEffect(() => {
     mapRef.current = leaflet.map(`map`, {
@@ -23,11 +25,7 @@ const Map = ({city, points}) => {
         attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
       })
       .addTo(mapRef.current);
-  }, []);
 
-  useEffect(() => {
-
-    const markers = [];
     points.forEach((point) => {
       const customIcon = leaflet.icon({
         iconUrl: `./img/pin.svg`,
@@ -41,14 +39,11 @@ const Map = ({city, points}) => {
       {
         icon: customIcon
       });
-      markers.push(marker);
       marker.addTo(mapRef.current);
     });
 
     return () => {
-      markers.forEach((marker) => {
-        marker.remove();
-      });
+      mapRef.current.remove();
     };
 
   }, [points]);
@@ -59,11 +54,6 @@ const Map = ({city, points}) => {
 };
 
 Map.propTypes = {
-  city: PropTypes.shape({
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-  }),
   points: PropTypes.array.isRequired,
 };
 

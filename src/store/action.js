@@ -1,7 +1,7 @@
-
 export const ActionType = {
   CHANGE_CITY: `sixCities/changeCity`,
   FILTER_OFFERS: `sixCities/filterOffers`,
+  LOAD_OFFERS: `sixCities/fetchOffers`,
 };
 
 export const ActionCreator = {
@@ -12,4 +12,8 @@ export const ActionCreator = {
   filteredOffers: () => ({
     type: ActionType.FILTER_OFFERS
   }),
+  loadOffers: (offers) => ({
+    type: ActionType.LOAD_OFFERS,
+    payload: offers
+  })
 };
