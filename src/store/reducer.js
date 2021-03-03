@@ -1,4 +1,4 @@
-import {INIT_CITY} from '../const';
+import {INIT_CITY, AuthorizationStatus} from '../const';
 import {ActionType} from './action';
 import {filterOffers} from '../filterOffers';
 
@@ -6,7 +6,7 @@ const initialState = {
   offers: [],
   city: INIT_CITY,
   isDataLoaded: false,
-  authorizationStatus: false,
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
   user: {}
 };
 
@@ -32,7 +32,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.REQUIRED_AUTHORIZATION:
       return {
         ...state,
-        authorizationStatus: action.payload.status === 200,
+        authorizationStatus: AuthorizationStatus.AUTH,
+      };
+    case ActionType.CHECK_AUTHORIZATION:
+      return {
+        ...state,
         user: action.payload.data
       };
   }

@@ -1,5 +1,6 @@
 import {ActionCreator} from "./action";
 import {AppRoute, APIRoute} from "../const";
+import {AuthorizationStatus} from "../const";
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(APIRoute.OFFERS)
@@ -8,12 +9,12 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)
-    .then((response) => dispatch(ActionCreator.requireAuthorization(response)))
+    .then((response) => dispatch(ActionCreator.checkAuthorization(response)))
     .catch(() => {})
 );
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
-  api.post(`/login`, {email, password})
-    .then(() => dispatch(ActionCreator.requireAuthorization(true)))
+  api.post(APIRoute.LOGIN, {email, password})
+    .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
     .then(() => dispatch(ActionCreator.redirectToRoute(AppRoute.ROOT)))
 );

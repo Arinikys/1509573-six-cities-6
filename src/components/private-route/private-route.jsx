@@ -2,17 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {APIRoute} from "../../const";
+import {APIRoute, AuthorizationStatus} from "../../const";
 
 
 const PrivateRoute = ({render, path, exact, authorizationStatus}) => {
+  console.log(authorizationStatus)
   return (
     <Route
       path={path}
       exact={exact}
       render={(routeProps) => {
         return (
-          authorizationStatus
+          authorizationStatus === AuthorizationStatus.AUTH
             ? render(routeProps)
             : <Redirect to={APIRoute.LOGIN} />
         );
@@ -22,7 +23,7 @@ const PrivateRoute = ({render, path, exact, authorizationStatus}) => {
 };
 
 PrivateRoute.propTypes = {
-  authorizationStatus: PropTypes.bool.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
   exact: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
   render: PropTypes.func.isRequired,

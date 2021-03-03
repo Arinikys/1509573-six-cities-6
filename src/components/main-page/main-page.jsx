@@ -8,7 +8,7 @@ import LoadingScreen from "../loading-screen/loading-screen";
 import CitiesList from "../common/cities-list/cities-list";
 import {ActionCreator} from "../../store/action";
 import {fetchOffersList} from "../../store/api-actions";
-import {AppRoute} from "../../const";
+import {AppRoute, AuthorizationStatus} from "../../const";
 
 const MainPage = (props) => {
   const {offers, onCitySelect, city, isDataLoaded, onLoadData, authorizationStatus, user} = props;
@@ -53,7 +53,7 @@ const MainPage = (props) => {
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
-                  { authorizationStatus
+                  { authorizationStatus === AuthorizationStatus.AUTH
                     ? <a className="header__nav-link header__nav-link--profile"
                       onClick={() => history.push(AppRoute.FAVORITES)}
                     >
@@ -126,7 +126,7 @@ MainPage.propTypes = {
   city: PropTypes.string.isRequired,
   isDataLoaded: PropTypes.bool.isRequired,
   onLoadData: PropTypes.func.isRequired,
-  authorizationStatus: PropTypes.bool.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
   user: PropTypes.object,
 };
 
