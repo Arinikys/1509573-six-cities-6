@@ -24,15 +24,16 @@ const store = createStore(
         applyMiddleware(redirect)
     )
 );
+(async () => {
+  await store.dispatch(checkAuth());
+  ReactDOM.render(
+      <Provider store={store}>
+        <App
+          offers={offers}
+          comments={comments}
+        />,
+      </Provider>,
+      document.querySelector(`#root`)
+  );
+})();
 
-store.dispatch(checkAuth());
-
-ReactDOM.render(
-    <Provider store={store}>
-      <App
-        offers={offers}
-        comments={comments}
-      />,
-    </Provider>,
-    document.querySelector(`#root`)
-);
