@@ -6,6 +6,8 @@ import OfferPage from '../offer-page/offer-page';
 import LoginPage from "../login-page/login-page";
 import FavoritesPage from "../favorites-page/favorites-page";
 import NotFoundPage from "../not-found-page/not-found-page";
+import PrivateRoute from "../private-route/private-route";
+import {AppRoute} from "../../const";
 
 const App = (props) => {
   const {offers, comments} = props;
@@ -15,10 +17,12 @@ const App = (props) => {
         <Route exact path="/">
           <MainPage />
         </Route>
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/favorites">
-          <FavoritesPage offers={offers}/>
-        </Route>
+        <Route exact path={AppRoute.LOGIN} component={LoginPage} />
+        <PrivateRoute exact
+          path={AppRoute.FAVORITES}
+          render={() => <FavoritesPage offers={offers}/>}
+        >
+        </PrivateRoute>
         <Route exact path="/offer/:id?">
           <OfferPage offer={offers[0]} offers={offers} comments={comments}/>
         </Route>

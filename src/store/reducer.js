@@ -5,7 +5,9 @@ import {filterOffers} from '../filterOffers';
 const initialState = {
   offers: [],
   city: INIT_CITY,
-  isDataLoaded: false
+  isDataLoaded: false,
+  authorizationStatus: false,
+  user: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,9 +29,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         offers: filterOffers(state.city, initialState.offers)
       };
+    case ActionType.REQUIRED_AUTHORIZATION:
+      return {
+        ...state,
+        authorizationStatus: action.payload.status === 200,
+        user: action.payload.data
+      };
   }
   return state;
 };
-
 
 export {reducer};
