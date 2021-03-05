@@ -1,11 +1,13 @@
-import {INIT_CITY} from '../const';
+import {INIT_CITY, AuthorizationStatus} from '../const';
 import {ActionType} from './action';
 import {filterOffers} from '../filterOffers';
 
 const initialState = {
   offers: [],
   city: INIT_CITY,
-  isDataLoaded: false
+  isDataLoaded: false,
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
+  user: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,9 +29,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         offers: filterOffers(state.city, initialState.offers)
       };
+    case ActionType.REQUIRED_AUTHORIZATION:
+      return {
+        ...state,
+        authorizationStatus: action.payload,
+      };
+    case ActionType.CHECK_AUTHORIZATION:
+      return {
+        ...state,
+        user: action.payload.data,
+        authorizationStatus: action.payload.status === 200 ? AuthorizationStatus.AUTH : AuthorizationStatus.NO_AUTH,
+      };
   }
   return state;
 };
-
 
 export {reducer};

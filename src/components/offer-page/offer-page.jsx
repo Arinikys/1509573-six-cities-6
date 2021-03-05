@@ -5,6 +5,7 @@ import ReviewList from "./review-list";
 import {useHistory} from "react-router-dom";
 import CardsList from "../common/card-list/cards-list";
 import Map from "../common/map/map";
+import {AppRoute} from "../../const";
 
 const OfferPage = ({offer, offers, comments}) => {
   const history = useHistory();
@@ -37,7 +38,7 @@ const OfferPage = ({offer, offers, comments}) => {
             <div className="header__left">
               <a
                 className="header__logo-link"
-                onClick={() => history.push(`/`)}
+                onClick={() => history.push(AppRoute.ROOT)}
               >
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
               </a>
@@ -47,7 +48,7 @@ const OfferPage = ({offer, offers, comments}) => {
                 <li className="header__nav-item user">
                   <a
                     className="header__nav-link header__nav-link--profile"
-                    onClick={() => history.push(`/login`)}
+                    onClick={() => history.push(AppRoute.LOGIN)}
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
