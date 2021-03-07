@@ -8,7 +8,6 @@ const Map = ({points, activeCardId}) => {
   const mapRef = useRef();
 
   const city = points[0].city.location;
-
   useEffect(() => {
     mapRef.current = leaflet.map(`map`, {
       center: {
@@ -26,6 +25,14 @@ const Map = ({points, activeCardId}) => {
       })
       .addTo(mapRef.current);
 
+    return () => {
+      mapRef.current.remove();
+    };
+
+  }, [city]);
+
+  useEffect(() => {
+    const markers = [];
     points.forEach((point) => {
       const customIcon = leaflet.icon({
         iconUrl: point.id === activeCardId ? `./img/pin-active.svg` : `./img/pin.svg`,
@@ -40,10 +47,13 @@ const Map = ({points, activeCardId}) => {
         icon: customIcon
       });
       marker.addTo(mapRef.current);
+      markers.push(marker);
     });
 
     return () => {
-      mapRef.current.remove();
+      markers.forEach((marker) => {
+        mapRef.current.removeLayer(marker);
+      });
     };
 
   }, [points, activeCardId]);
@@ -55,7 +65,7 @@ const Map = ({points, activeCardId}) => {
 
 Map.propTypes = {
   points: PropTypes.array.isRequired,
-  activeCardId: PropTypes.number.isRequired,
+  activeCardId: PropTypes.number,
 };
 
 export default Map;

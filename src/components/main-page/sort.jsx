@@ -49,8 +49,7 @@ const Sort = ({onSortTypeChange}) => {
 };
 
 Sort.propTypes = {
-  onSortTypeChange: PropTypes.func.isRequired,
-  currSortType: PropTypes.string.isRequired,
+  onSortTypeChange: PropTypes.func.isRequired
 };
 
 export default Sort;
