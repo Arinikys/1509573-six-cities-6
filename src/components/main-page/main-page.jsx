@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router-dom';
@@ -6,12 +6,15 @@ import CardsList from "../common/card-list/cards-list";
 import Map from "../common/map/map";
 import LoadingScreen from "../loading-screen/loading-screen";
 import CitiesList from "../common/cities-list/cities-list";
+import Sort from "./sort";
 import {ActionCreator} from "../../store/action";
 import {fetchOffersList} from "../../store/api-actions";
 import {AppRoute, AuthorizationStatus} from "../../const";
 
 const MainPage = (props) => {
-  const {offers, onCitySelect, city, isDataLoaded, onLoadData, authorizationStatus, user} = props;
+  const {offers, onCitySelect, city, isDataLoaded, onLoadData, authorizationStatus, user, onSortTypeSelect} = props;
+  const [activeCardId, setactiveCardId] = useState(null);
+
   useEffect(() => {
     if (isDataLoaded) {
       onCitySelect(city);
@@ -19,6 +22,10 @@ const MainPage = (props) => {
       onLoadData();
     }
   }, [isDataLoaded]);
+
+  const onCardMouseOver = (id) => {
+    setactiveCardId(id);
+  };
 
   if (!isDataLoaded) {
     return (
@@ -88,28 +95,14 @@ const MainPage = (props) => {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offers.length} aces to stay in {city}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex="0">
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"/>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex="0">Popular</li>
-                  <li className="places__option" tabIndex="0">Price: low to high</li>
-                  <li className="places__option" tabIndex="0">Price: high to low</li>
-                  <li className="places__option" tabIndex="0">Top rated first</li>
-                </ul>
-              </form>
+              <Sort onSortTypeChange={onSortTypeSelect}/>
               <div className="cities__places-list places__list tabs__content">
-                <CardsList offers={offers} getActiveCard={() => {}}/>
+                <CardsList offers={offers} getActiveCard={onCardMouseOver}/>
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map points={offers}/>
+                <Map points={offers} activeCardId={activeCardId}/>
               </section>
             </div>
           </div>
@@ -123,6 +116,7 @@ const MainPage = (props) => {
 MainPage.propTypes = {
   offers: PropTypes.array.isRequired,
   onCitySelect: PropTypes.func.isRequired,
+  onSortTypeSelect: PropTypes.func.isRequired,
   city: PropTypes.string.isRequired,
   isDataLoaded: PropTypes.bool.isRequired,
   onLoadData: PropTypes.func.isRequired,
@@ -142,6 +136,9 @@ const mapDispatchToProps = (dispatch) => ({
   onCitySelect(city) {
     dispatch(ActionCreator.changeCity(city));
     dispatch(ActionCreator.filteredOffers());
+  },
+  onSortTypeSelect(type) {
+    dispatch(ActionCreator.sortOffers(type));
   },
   onLoadData() {
     dispatch(fetchOffersList());

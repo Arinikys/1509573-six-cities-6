@@ -5,10 +5,15 @@ export const ActionType = {
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
   CHECK_AUTHORIZATION: `user/checkAuthorization`,
   REDIRECT_TO_ROUTE: `sixCities/redirectToRoute`,
-  GET_CREDENTIALS: `user/getCredentials`
+  GET_CREDENTIALS: `user/getCredentials`,
+  SORT_OFFERS: `sixCities/sortOffers`,
 };
 
 export const ActionCreator = {
+  sortOffers: (type) => ({
+    type: ActionType.SORT_OFFERS,
+    payload: type
+  }),
   changeCity: (city) => ({
     type: ActionType.CHANGE_CITY,
     payload: city

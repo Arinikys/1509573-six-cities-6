@@ -3,7 +3,7 @@ import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import "leaflet/dist/leaflet.css";
 
-const Map = ({points}) => {
+const Map = ({points, activeCardId}) => {
 
   const mapRef = useRef();
 
@@ -28,7 +28,7 @@ const Map = ({points}) => {
 
     points.forEach((point) => {
       const customIcon = leaflet.icon({
-        iconUrl: `./img/pin.svg`,
+        iconUrl: point.id === activeCardId ? `./img/pin-active.svg` : `./img/pin.svg`,
         iconSize: [30, 30]
       });
 
@@ -46,7 +46,7 @@ const Map = ({points}) => {
       mapRef.current.remove();
     };
 
-  }, [points]);
+  }, [points, activeCardId]);
 
   return (
     <div id="map" style={{height: `100%`}} />
@@ -55,6 +55,7 @@ const Map = ({points}) => {
 
 Map.propTypes = {
   points: PropTypes.array.isRequired,
+  activeCardId: PropTypes.number.isRequired,
 };
 
 export default Map;
