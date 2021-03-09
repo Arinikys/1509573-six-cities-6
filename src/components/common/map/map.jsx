@@ -3,12 +3,11 @@ import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import "leaflet/dist/leaflet.css";
 
-const Map = ({points}) => {
+const Map = ({points, activeCardId}) => {
 
   const mapRef = useRef();
 
   const city = points[0].city.location;
-
   useEffect(() => {
     mapRef.current = leaflet.map(`map`, {
       center: {
@@ -26,9 +25,17 @@ const Map = ({points}) => {
       })
       .addTo(mapRef.current);
 
+    return () => {
+      mapRef.current.remove();
+    };
+
+  }, [city]);
+
+  useEffect(() => {
+    const markers = [];
     points.forEach((point) => {
       const customIcon = leaflet.icon({
-        iconUrl: `./img/pin.svg`,
+        iconUrl: point.id === activeCardId ? `./img/pin-active.svg` : `./img/pin.svg`,
         iconSize: [30, 30]
       });
 
@@ -40,13 +47,16 @@ const Map = ({points}) => {
         icon: customIcon
       });
       marker.addTo(mapRef.current);
+      markers.push(marker);
     });
 
     return () => {
-      mapRef.current.remove();
+      markers.forEach((marker) => {
+        mapRef.current.removeLayer(marker);
+      });
     };
 
-  }, [points]);
+  }, [points, activeCardId]);
 
   return (
     <div id="map" style={{height: `100%`}} />
@@ -55,6 +65,7 @@ const Map = ({points}) => {
 
 Map.propTypes = {
   points: PropTypes.array.isRequired,
+  activeCardId: PropTypes.number,
 };
 
 export default Map;

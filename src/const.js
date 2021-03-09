@@ -20,3 +20,23 @@ export const AuthorizationStatus = {
   NO_AUTH: `NO_AUTH`,
 };
 
+export const defaultConstType = `POPULAR`;
+
+export const sortType = {
+  POPULAR: {
+    value: `POPULAR`,
+    label: `Popular`,
+  },
+  ACS_PRICE: {
+    value: `ACS_PRICE`,
+    label: `Price: low to high`,
+  },
+  DESC_PRICE: {
+    value: `DESC_PRICE`,
+    label: `Price: high to low`,
+  },
+  RATE: {
+    value: `RATE`,
+    label: `Top rated first`,
+  },
+};

@@ -1,6 +1,7 @@
 import {INIT_CITY, AuthorizationStatus} from '../const';
 import {ActionType} from './action';
 import {filterOffers} from '../filterOffers';
+import {sortOffers} from "../sortOffers";
 
 const initialState = {
   offers: [],
@@ -28,6 +29,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         offers: filterOffers(state.city, initialState.offers)
+      };
+    case ActionType.SORT_OFFERS:
+      return {
+        ...state,
+        offers: sortOffers([...state.offers], action.payload)
       };
     case ActionType.REQUIRED_AUTHORIZATION:
       return {

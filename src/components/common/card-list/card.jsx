@@ -11,7 +11,7 @@ const Card = (props) => {
       className="cities__place-card place-card"
       onMouseOver={(evt) => {
         evt.preventDefault();
-        onMouseOver(offer);
+        onMouseOver(offer.id);
       }}
     >
       {offer.is_premium ? <div className="place-card__mark"><span>Premium</span></div> : ``}
