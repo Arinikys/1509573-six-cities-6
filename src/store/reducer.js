@@ -33,7 +33,7 @@ const reducer = (state = initialState, action) => {
     case ActionType.SORT_OFFERS:
       return {
         ...state,
-        offers: sortOffers(state.offers, action.payload)
+        offers: sortOffers([...state.offers], action.payload)
       };
     case ActionType.REQUIRED_AUTHORIZATION:
       return {
