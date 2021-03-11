@@ -11,22 +11,18 @@ import {AppRoute} from "../../const";
 import browserHistory from "../../browser-history";
 
 const App = (props) => {
-  const {offers, comments} = props;
+  const {offers} = props;
   return (
     <BrowserRouter history={browserHistory}>
       <Switch>
-        <Route exact path="/">
-          <MainPage />
-        </Route>
+        <Route exact path={AppRoute.ROOT} component={MainPage} />
         <Route exact path={AppRoute.LOGIN} component={LoginPage} />
         <PrivateRoute exact
           path={AppRoute.FAVORITES}
           render={() => <FavoritesPage offers={offers}/>}
         >
         </PrivateRoute>
-        <Route exact path="/offer/:id?">
-          <OfferPage offer={offers[0]} offers={offers} comments={comments}/>
-        </Route>
+        <Route exact path="/offer/:id?" component={OfferPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </BrowserRouter>
@@ -35,7 +31,6 @@ const App = (props) => {
 
 App.propTypes = {
   offers: PropTypes.array.isRequired,
-  comments: PropTypes.array.isRequired,
 };
 
 export default App;

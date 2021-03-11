@@ -3,7 +3,7 @@ import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import "leaflet/dist/leaflet.css";
 
-const Map = ({points, activeCardId}) => {
+const Map = ({points, activeCardId, activePoint}) => {
 
   const mapRef = useRef();
 
@@ -50,13 +50,30 @@ const Map = ({points, activeCardId}) => {
       markers.push(marker);
     });
 
+    if (activePoint !== undefined) {
+      const customIcon = leaflet.icon({
+        iconUrl: `./img/pin-active.svg`,
+        iconSize: [30, 30]
+      });
+
+      const marker = leaflet.marker({
+        lat: activePoint.location.latitude,
+        lng: activePoint.location.longitude
+      },
+      {
+        icon: customIcon
+      });
+      marker.addTo(mapRef.current);
+      markers.push(marker);
+    }
+
     return () => {
       markers.forEach((marker) => {
         mapRef.current.removeLayer(marker);
       });
     };
 
-  }, [points, activeCardId]);
+  }, [points, activeCardId, activePoint]);
 
   return (
     <div id="map" style={{height: `100%`}} />
@@ -65,6 +82,7 @@ const Map = ({points, activeCardId}) => {
 
 Map.propTypes = {
   points: PropTypes.array.isRequired,
+  activePoint: PropTypes.object,
   activeCardId: PropTypes.number,
 };
 

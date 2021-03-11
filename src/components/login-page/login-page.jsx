@@ -1,9 +1,8 @@
 import React, {useRef} from 'react';
 import PropTypes from "prop-types";
-import {useHistory} from 'react-router-dom';
 import {connect} from "react-redux";
 import {login} from "../../store/api-actions";
-import {AppRoute} from "../../const";
+import Header from "../common/header/header";
 
 const LoginPage = ({onSubmit}) => {
   const loginRef = useRef();
@@ -17,8 +16,6 @@ const LoginPage = ({onSubmit}) => {
       password: passwordRef.current.value,
     });
   };
-
-  const history = useHistory();
 
   return (<>
     <div style={{display: `none`}}>
@@ -35,20 +32,7 @@ const LoginPage = ({onSubmit}) => {
       </svg>
     </div>
     <div className="page page--gray page--login">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a
-                className="header__logo-link"
-                onClick={() => history.push(AppRoute.ROOT)}
-              >
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">

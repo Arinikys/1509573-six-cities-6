@@ -1,19 +1,51 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import ReviewForm from "./review-form";
 import ReviewList from "./review-list";
-import {useHistory} from "react-router-dom";
 import CardsList from "../common/card-list/cards-list";
 import Map from "../common/map/map";
-import {AppRoute} from "../../const";
+import Header from "../common/header/header";
+import {AuthorizationStatus} from "../../const";
+import {connect} from "react-redux";
+import {fetchOffer, fetchNearOffers, fetchComments, addComments} from "../../store/api-actions";
+import LoadingScreen from "../loading-screen/loading-screen";
 
-const OfferPage = ({offer, offers, comments}) => {
-  const history = useHistory();
-  const nearOffers = offers.slice(0, 3);
-  const city = {
-    "latitude": 52.370216,
-    "longitude": 4.895168,
-    "zoom": 11
+const OfferPage = (props) => {
+  const {authorizationStatus, onLoadOffer, offer, onLoadOfferData} = props;
+  const {nearOffers, onLoadNearOffersData, onLoadNearOffers} = props;
+  const {comments, onLoadComments, onLoadCommentsData, onAddComments, onLoadCommentsFormData, commentsFormError} = props;
+  const offerId = props.match.params.id;
+  const [commentFormDisable, setCommentFormDisable] = useState(false);
+
+  useEffect(() => {
+    if (!onLoadOfferData) {
+      onLoadOffer(offerId);
+    }
+
+    if (!onLoadNearOffersData) {
+      onLoadNearOffers(offerId);
+    }
+
+    if (!onLoadCommentsData) {
+      onLoadComments(offerId);
+    }
+  }, [onLoadOfferData, onLoadNearOffersData, onLoadCommentsData]);
+
+  useEffect(() => {
+    if (onLoadCommentsFormData) {
+      setCommentFormDisable(false);
+    }
+  }, [onLoadCommentsFormData]);
+
+  if (!onLoadOfferData || !onLoadNearOffersData || !onLoadCommentsData) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  const onCommentSubmit = (formDataObj) => {
+    onAddComments(offerId, formDataObj);
+    setCommentFormDisable(true);
   };
 
   return (<>
@@ -32,40 +64,12 @@ const OfferPage = ({offer, offers, comments}) => {
     </div>
 
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a
-                className="header__logo-link"
-                onClick={() => history.push(AppRoute.ROOT)}
-              >
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a
-                    className="header__nav-link header__nav-link--profile"
-                    onClick={() => history.push(AppRoute.LOGIN)}
-                  >
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__login">Sign in</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <Header />
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {offer.images.map((image, index) => (
+              {offer.images.slice(0, 6).map((image, index) => (
                 <div key={`image-${index}`} className="property__image-wrapper">
                   <img className="property__image" src={image} alt="Photo studio"/>
                 </div>
@@ -139,13 +143,18 @@ const OfferPage = ({offer, offers, comments}) => {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
                 <ReviewList comments={comments} />
-                <ReviewForm />
+                { authorizationStatus === AuthorizationStatus.AUTH
+                  ? <ReviewForm onCommentSubmit={onCommentSubmit} isFormDisable={commentFormDisable} errorMessage={commentsFormError}/>
+                  : ``
+                }
               </section>
             </div>
           </div>
-          <section className="property__map map">
-            <Map city={city} points={nearOffers}/>
-          </section>
+        </section>
+
+
+        <section className="property__map map">
+          <Map points={nearOffers} activePoint={offer}/>
         </section>
 
         <div className="container">
@@ -163,8 +172,49 @@ const OfferPage = ({offer, offers, comments}) => {
 };
 
 OfferPage.propTypes = {
-  offer: PropTypes.object.isRequired,
-  offers: PropTypes.array.isRequired,
   comments: PropTypes.array.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
+  onLoadOffer: PropTypes.func.isRequired,
+  offer: PropTypes.object.isRequired,
+  onLoadOfferData: PropTypes.bool.isRequired,
+  onLoadNearOffersData: PropTypes.bool.isRequired,
+  onLoadNearOffers: PropTypes.func.isRequired,
+  nearOffers: PropTypes.array.isRequired,
+  onLoadComments: PropTypes.func.isRequired,
+  onLoadCommentsData: PropTypes.bool.isRequired,
+  onAddComments: PropTypes.func.isRequired,
+  onLoadCommentsFormData: PropTypes.bool.isRequired,
+  commentsFormError: PropTypes.string,
+  match: PropTypes.object,
 };
-export default OfferPage;
+
+const mapStateToProps = (state) => ({
+  authorizationStatus: state.authorizationStatus,
+  offer: state.offer,
+  onLoadOfferData: state.onLoadOfferData,
+  nearOffers: state.nearOffers,
+  onLoadNearOffersData: state.onLoadNearOffersData,
+  comments: state.comments,
+  onLoadCommentsData: state.onLoadCommentsData,
+  onLoadCommentsFormData: state.onLoadCommentsFormData,
+  commentsFormError: state.commentsFormError
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onAddComments(id, {rating, comment}) {
+    dispatch(addComments(id, {rating, comment}));
+  },
+  onLoadOffer(id) {
+    dispatch(fetchOffer(id));
+  },
+  onLoadNearOffers(id) {
+    dispatch(fetchNearOffers(id));
+  },
+  onLoadComments(id) {
+    dispatch(fetchComments(id));
+  },
+});
+
+
+export {OfferPage};
+export default connect(mapStateToProps, mapDispatchToProps)(OfferPage);
