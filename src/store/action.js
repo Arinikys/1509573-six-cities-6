@@ -11,7 +11,8 @@ export const ActionType = {
   GET_CREDENTIALS: `user/getCredentials`,
   SORT_OFFERS: `sixCities/sortOffers`,
   ADD_COMMENTS: `sixCities/addComments`,
-  ADD_COMMENTS_FAIL: `sixCities/addCommentsFail`
+  ADD_COMMENTS_FAIL: `sixCities/addCommentsFail`,
+  LOAD_FAV_OFFERS: `sixCities/loadFavOffers`
 };
 
 export const ActionCreator = {
@@ -33,6 +34,10 @@ export const ActionCreator = {
   loadOffer: (offer) => ({
     type: ActionType.LOAD_OFFER,
     payload: offer
+  }),
+  loadFavOffers: (offers) => ({
+    type: ActionType.LOAD_FAV_OFFERS,
+    payload: offers
   }),
   loadComments: (comments) => ({
     type: ActionType.LOAD_COMMENTS,

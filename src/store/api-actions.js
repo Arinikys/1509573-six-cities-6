@@ -7,6 +7,11 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
     .then(({data}) => dispatch(ActionCreator.loadOffers(data)))
 );
 
+export const fetchFavOffersList = () => (dispatch, _getState, api) => (
+  api.get(APIRoute.FAVORITES)
+    .then(({data}) => dispatch(ActionCreator.loadFavOffers(data)))
+);
+
 export const fetchOffer = (id) => (dispatch, _getState, api) => (
   api.get(`${APIRoute.OFFERS}/${id}`)
     .then(({data}) => dispatch(ActionCreator.loadOffer(data)))

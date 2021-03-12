@@ -141,12 +141,12 @@ const OfferPage = (props) => {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.slice(0, 10).length}</span></h2>
                 <ReviewList comments={comments} />
-                { authorizationStatus === AuthorizationStatus.AUTH
-                  ? <ReviewForm onCommentSubmit={onCommentSubmit} isFormDisable={commentFormDisable} errorMessage={commentsFormError}/>
-                  : ``
-                }
+                {/*{ authorizationStatus === AuthorizationStatus.AUTH*/}
+                {/*  ? <ReviewForm onCommentSubmit={onCommentSubmit} isFormDisable={commentFormDisable} errorMessage={commentsFormError}/>*/}
+                {/*  : ``*/}
+                {/*}*/}
               </section>
             </div>
           </div>

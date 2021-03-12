@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
 import MainPage from '../main-page/main-page';
 import OfferPage from '../offer-page/offer-page';
@@ -10,8 +9,7 @@ import PrivateRoute from "../private-route/private-route";
 import {AppRoute} from "../../const";
 import browserHistory from "../../browser-history";
 
-const App = (props) => {
-  const {offers} = props;
+const App = () => {
   return (
     <BrowserRouter history={browserHistory}>
       <Switch>
@@ -19,7 +17,7 @@ const App = (props) => {
         <Route exact path={AppRoute.LOGIN} component={LoginPage} />
         <PrivateRoute exact
           path={AppRoute.FAVORITES}
-          render={() => <FavoritesPage offers={offers}/>}
+          render={() => <FavoritesPage />}
         >
         </PrivateRoute>
         <Route exact path="/offer/:id?" component={OfferPage} />
@@ -27,10 +25,6 @@ const App = (props) => {
       </Switch>
     </BrowserRouter>
   );
-};
-
-App.propTypes = {
-  offers: PropTypes.array.isRequired,
 };
 
 export default App;

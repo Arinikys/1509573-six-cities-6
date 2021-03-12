@@ -17,6 +17,8 @@ const initialState = {
   onLoadCommentsData: false,
   onLoadCommentsFormData: false,
   commentsFormError: ``,
+  favOffers: [],
+  onLoadFavOfferData: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -32,6 +34,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         offers: action.payload,
         isDataLoaded: true,
+      };
+    case ActionType.LOAD_FAV_OFFERS:
+      return {
+        ...state,
+        favOffers: action.payload,
+        onLoadFavOfferData: true,
       };
     case ActionType.LOAD_OFFER:
       return {

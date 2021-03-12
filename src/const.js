@@ -14,6 +14,7 @@ export const APIRoute = {
   OFFERS: `/hotels`,
   LOGIN: `/login`,
   COMMENTS: `/comments`,
+  FAVORITES: `/favorite`,
 };
 
 export const AuthorizationStatus = {

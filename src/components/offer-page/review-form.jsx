@@ -54,7 +54,7 @@ const ReviewForm = ({onCommentSubmit, isFormDisable, errorMessage}) => {
         <textarea
           className="reviews__textarea form__textarea"
           id="review"
-          name="comment2"
+          name="comment"
           minLength="50"
           maxLength="300"
           required
