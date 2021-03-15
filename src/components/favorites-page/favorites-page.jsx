@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import CardsList from './cards-list';
 import Header from "../common/header/header";
 import {connect} from "react-redux";
-import {fetchFavOffersList} from "../../store/api-actions";
+import {fetchFavOffersList, updateFav} from "../../store/api-actions";
 
 const FavoritesPage = (props) => {
-  const {favOffers, onLoadFavOfferData, onLoadFavOffers} = props;
+  const {favOffers, onLoadFavOfferData, onLoadFavOffers, onUpdateFav} = props;
   useEffect(() => {
     if (!onLoadFavOfferData) {
       onLoadFavOffers();
@@ -34,7 +34,7 @@ const FavoritesPage = (props) => {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             { favOffers.length > 0
-              ? <CardsList offers={favOffers}/>
+              ? <CardsList offers={favOffers} updateFav={onUpdateFav}/>
               : <p>Nothing yet saved</p>
             }
           </section>
@@ -53,7 +53,8 @@ const FavoritesPage = (props) => {
 FavoritesPage.propTypes = {
   favOffers: PropTypes.array.isRequired,
   onLoadFavOfferData: PropTypes.bool.isRequired,
-  onLoadFavOffers: PropTypes.func.isRequired
+  onLoadFavOffers: PropTypes.func.isRequired,
+  onUpdateFav: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -64,6 +65,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onLoadFavOffers() {
     dispatch(fetchFavOffersList());
+  },
+  onUpdateFav(id, status) {
+    dispatch(updateFav(id, status));
   },
 });
 

@@ -8,10 +8,10 @@ import CitiesList from "../common/cities-list/cities-list";
 import Sort from "./sort";
 import Header from "../common/header/header";
 import {ActionCreator} from "../../store/action";
-import {fetchOffersList} from "../../store/api-actions";
+import {fetchOffersList, updateFav} from "../../store/api-actions";
 
 const MainPage = (props) => {
-  const {offers, onCitySelect, city, isDataLoaded, onLoadData, onSortTypeSelect} = props;
+  const {offers, onCitySelect, city, isDataLoaded, onLoadData, onSortTypeSelect, onUpdateFav} = props;
   const [activeCardId, setactiveCardId] = useState(null);
 
   useEffect(() => {
@@ -31,6 +31,10 @@ const MainPage = (props) => {
       <LoadingScreen />
     );
   }
+
+  const onFavBtnClick = (id, status) => {
+    onUpdateFav(id, status);
+  };
 
   return (<>
     <div style={{display: `none`}}>
@@ -62,7 +66,7 @@ const MainPage = (props) => {
               <b className="places__found">{offers.length} aces to stay in {city}</b>
               <Sort onSortTypeChange={onSortTypeSelect}/>
               <div className="cities__places-list places__list tabs__content">
-                <CardsList offers={offers} getActiveCard={onCardMouseOver}/>
+                <CardsList offers={offers} getActiveCard={onCardMouseOver} updateFav={onFavBtnClick}/>
               </div>
             </section>
             <div className="cities__right-section">
@@ -87,6 +91,7 @@ MainPage.propTypes = {
   onLoadData: PropTypes.func.isRequired,
   authorizationStatus: PropTypes.string.isRequired,
   user: PropTypes.object,
+  onUpdateFav: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -107,6 +112,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onLoadData() {
     dispatch(fetchOffersList());
+  },
+  onUpdateFav(id, status) {
+    dispatch(updateFav(id, status));
   },
 });
 

@@ -1,18 +1,21 @@
 import React, {useEffect, useRef} from 'react';
+import Star from "./star";
 import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {addComments} from "../../store/api-actions";
+import {loadStatus} from "../../const";
+import {ActionCreator} from "../../store/action";
 
-const ReviewForm = ({onCommentSubmit, isFormDisable, errorMessage}) => {
+const ReviewForm = ({onAddComments, commentsFormError, offer, onLoadCommentsFormData}) => {
 
   const formRef = useRef();
-  const commentRef = useRef();
-  const ratingRef = useRef();
+  const starArr = Array.apply(1, Array(5));
 
   useEffect(() => {
-    if (errorMessage === ``) {
-      commentRef.current.value = ``;
-      ratingRef.current.checked = false;
+    if (onLoadCommentsFormData === loadStatus.SUCCESS) {
+      formRef.current.reset();
     }
-  }, [isFormDisable]);
+  }, [onLoadCommentsFormData]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -21,34 +24,16 @@ const ReviewForm = ({onCommentSubmit, isFormDisable, errorMessage}) => {
     formData.forEach((value, key) => {
       formDataObj[key] = value;
     });
-    onCommentSubmit(formDataObj);
+    onAddComments(offer.id, formDataObj);
   };
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit} ref={formRef}>
-      <fieldset style={{border: `none`}} disabled={isFormDisable}>
+      <fieldset style={{border: `none`}} disabled={onLoadCommentsFormData === loadStatus.FETCHING}>
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
         <div className="reviews__rating-form form__rating">
-          {Array.apply(0, Array(5)).map((item, starIndex) => (
-            <>
-              <input
-                ref={ratingRef}
-                className="form__rating-input visually-hidden"
-                name="rating"
-                value={starIndex + 1}
-                id={`${starIndex + 1}-stars`}
-                type="radio"
-                required />
-              <label
-                htmlFor={`${starIndex + 1}-stars`}
-                className="reviews__rating-label form__rating-label"
-                title="perfect"
-              >
-                <svg className="form__star-image" width="37" height="33">
-                  <use xlinkHref="#icon-star"/>
-                </svg>
-              </label>
-            </>
+          {starArr.map((item, index) => (
+            <Star key={index} index={starArr.length - index} />
           ))}
         </div>
         <textarea
@@ -58,13 +43,12 @@ const ReviewForm = ({onCommentSubmit, isFormDisable, errorMessage}) => {
           minLength="50"
           maxLength="300"
           required
-          ref={commentRef}
           placeholder="Tell how was your stay, what you like and what can be improved"
         />
-        { errorMessage !== ``
+        { commentsFormError !== ``
           ? <div className="reviews__button-wrapper">
             <p className="reviews__help" style={{color: `red`}}>
-              {errorMessage}
+              {commentsFormError}
             </p>
           </div>
           : ``
@@ -82,9 +66,25 @@ const ReviewForm = ({onCommentSubmit, isFormDisable, errorMessage}) => {
 };
 
 ReviewForm.propTypes = {
-  onCommentSubmit: PropTypes.func.isRequired,
-  isFormDisable: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string,
+  onAddComments: PropTypes.func.isRequired,
+  commentsFormError: PropTypes.string.isRequired,
+  offer: PropTypes.object.isRequired,
+  onLoadCommentsFormData: PropTypes.string.isRequired,
 };
 
-export default ReviewForm;
+const mapStateToProps = (state) => ({
+  commentsFormError: state.commentsFormError,
+  offer: state.offer,
+  onLoadCommentsFormData: state.onLoadCommentsFormData,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onAddComments(id, {rating, comment}) {
+    dispatch(ActionCreator.addCommentsFetching());
+    dispatch(addComments(id, {rating, comment}));
+  },
+});
+
+
+export {ReviewForm};
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewForm);

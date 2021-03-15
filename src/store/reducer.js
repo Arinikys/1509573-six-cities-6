@@ -1,4 +1,4 @@
-import {INIT_CITY, AuthorizationStatus} from '../const';
+import {INIT_CITY, AuthorizationStatus, loadStatus} from '../const';
 import {ActionType} from './action';
 import {filterOffers} from '../filterOffers';
 import {sortOffers} from "../sortOffers";
@@ -14,11 +14,11 @@ const initialState = {
   nearOffers: [],
   onLoadOfferData: false,
   onLoadNearOffersData: false,
-  onLoadCommentsData: false,
-  onLoadCommentsFormData: false,
+  onLoadCommentsData: loadStatus.IDLE,
   commentsFormError: ``,
   favOffers: [],
   onLoadFavOfferData: false,
+  onLoadCommentsFormData: loadStatus.IDLE,
 };
 
 const reducer = (state = initialState, action) => {
@@ -41,6 +41,10 @@ const reducer = (state = initialState, action) => {
         favOffers: action.payload,
         onLoadFavOfferData: true,
       };
+    case ActionType.UPDATE_FAV:
+      return {
+        ...state,
+      };
     case ActionType.LOAD_OFFER:
       return {
         ...state,
@@ -51,7 +55,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         comments: action.payload,
-        onLoadCommentsData: true,
+        onLoadCommentsData: loadStatus.SUCCESS,
       };
     case ActionType.LOAD_NEAR_OFFERS:
       return {
@@ -78,14 +82,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         comments: action.payload,
-        onLoadCommentsFormData: true,
         commentsFormError: ``,
+        onLoadCommentsFormData: loadStatus.SUCCESS
+      };
+    case ActionType.ADD_COMMENTS_FETCHING:
+      return {
+        ...state,
+        onLoadCommentsFormData: loadStatus.FETCHING
       };
     case ActionType.ADD_COMMENTS_FAIL:
       return {
         ...state,
-        commentsFormError: `action.payload.error`,
-        onLoadCommentsFormData: true,
+        commentsFormError: action.payload,
+        onLoadCommentsFormData: loadStatus.ERROR
       };
     case ActionType.CHECK_AUTHORIZATION:
       return {

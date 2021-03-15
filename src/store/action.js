@@ -12,7 +12,9 @@ export const ActionType = {
   SORT_OFFERS: `sixCities/sortOffers`,
   ADD_COMMENTS: `sixCities/addComments`,
   ADD_COMMENTS_FAIL: `sixCities/addCommentsFail`,
-  LOAD_FAV_OFFERS: `sixCities/loadFavOffers`
+  LOAD_FAV_OFFERS: `sixCities/loadFavOffers`,
+  UPDATE_FAV: `sixCities/updateFav`,
+  ADD_COMMENTS_FETCHING: `sixCities/addCommentsFetching`
 };
 
 export const ActionCreator = {
@@ -65,6 +67,13 @@ export const ActionCreator = {
   }),
   addCommentsFail: (response) => ({
     type: ActionType.ADD_COMMENTS_FAIL,
+    payload: response,
+  }),
+  addCommentsFetching: () => ({
+    type: ActionType.ADD_COMMENTS_FETCHING,
+  }),
+  updateFav: (response) => ({
+    type: ActionType.UPDATE_FAV,
     payload: response,
   })
 };

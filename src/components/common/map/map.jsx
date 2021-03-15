@@ -83,7 +83,7 @@ const Map = ({points, activeCardId, activePoint}) => {
 Map.propTypes = {
   points: PropTypes.array.isRequired,
   activePoint: PropTypes.object,
-  activeCardId: PropTypes.number,
+  activeCardId: PropTypes.any,
 };
 
 export default Map;

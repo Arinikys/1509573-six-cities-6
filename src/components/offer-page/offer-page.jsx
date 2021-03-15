@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from "prop-types";
 import ReviewForm from "./review-form";
 import ReviewList from "./review-list";
 import CardsList from "../common/card-list/cards-list";
 import Map from "../common/map/map";
 import Header from "../common/header/header";
-import {AuthorizationStatus} from "../../const";
+import {AuthorizationStatus, loadStatus} from "../../const";
 import {connect} from "react-redux";
-import {fetchOffer, fetchNearOffers, fetchComments, addComments} from "../../store/api-actions";
+import {fetchOffer, fetchNearOffers, fetchComments, updateFav} from "../../store/api-actions";
 import LoadingScreen from "../loading-screen/loading-screen";
 
 const OfferPage = (props) => {
   const {authorizationStatus, onLoadOffer, offer, onLoadOfferData} = props;
   const {nearOffers, onLoadNearOffersData, onLoadNearOffers} = props;
-  const {comments, onLoadComments, onLoadCommentsData, onAddComments, onLoadCommentsFormData, commentsFormError} = props;
+  const {comments, onLoadComments, onLoadCommentsData} = props;
+  const {onUpdateFav} = props;
   const offerId = props.match.params.id;
-  const [commentFormDisable, setCommentFormDisable] = useState(false);
 
   useEffect(() => {
     if (!onLoadOfferData) {
@@ -26,27 +26,16 @@ const OfferPage = (props) => {
       onLoadNearOffers(offerId);
     }
 
-    if (!onLoadCommentsData) {
+    if (onLoadCommentsData !== loadStatus.SUCCESS) {
       onLoadComments(offerId);
     }
   }, [onLoadOfferData, onLoadNearOffersData, onLoadCommentsData]);
-
-  useEffect(() => {
-    if (onLoadCommentsFormData) {
-      setCommentFormDisable(false);
-    }
-  }, [onLoadCommentsFormData]);
 
   if (!onLoadOfferData || !onLoadNearOffersData || !onLoadCommentsData) {
     return (
       <LoadingScreen />
     );
   }
-
-  const onCommentSubmit = (formDataObj) => {
-    onAddComments(offerId, formDataObj);
-    setCommentFormDisable(true);
-  };
 
   return (<>
     <div style={{display: `none`}}>
@@ -83,10 +72,18 @@ const OfferPage = (props) => {
                 <h1 className="property__name">
                   {offer.title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
-                  <svg className="property__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"/>
-                  </svg>
+                <button className="property__bookmark-button button" type="button" onClick={(evt) => {
+                  evt.preventDefault();
+                  onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
+                }}>
+                  { offer.is_favorite
+                    ? <svg className="property__bookmark-icon" width="31" height="33" style={{stroke: `#4481c3`, fill: `#4481c3`}}>
+                      <use xlinkHref="#icon-bookmark"/>
+                    </svg>
+                    : <svg className="property__bookmark-icon" width="31" height="33" style = {{stroke: `#b8b8b8`, fill: `#fff`}}>
+                      <use xlinkHref="#icon-bookmark"/>
+                    </svg>
+                  }
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
               </div>
@@ -143,10 +140,10 @@ const OfferPage = (props) => {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.slice(0, 10).length}</span></h2>
                 <ReviewList comments={comments} />
-                {/*{ authorizationStatus === AuthorizationStatus.AUTH*/}
-                {/*  ? <ReviewForm onCommentSubmit={onCommentSubmit} isFormDisable={commentFormDisable} errorMessage={commentsFormError}/>*/}
-                {/*  : ``*/}
-                {/*}*/}
+                { authorizationStatus === AuthorizationStatus.AUTH
+                  ? <ReviewForm/>
+                  : ``
+                }
               </section>
             </div>
           </div>
@@ -161,7 +158,7 @@ const OfferPage = (props) => {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <CardsList offers={nearOffers} getActiveCard={() => {}}/>
+              <CardsList offers={nearOffers} getActiveCard={() => {}} updateFav={onUpdateFav} />
             </div>
           </section>
         </div>
@@ -181,11 +178,9 @@ OfferPage.propTypes = {
   onLoadNearOffers: PropTypes.func.isRequired,
   nearOffers: PropTypes.array.isRequired,
   onLoadComments: PropTypes.func.isRequired,
-  onLoadCommentsData: PropTypes.bool.isRequired,
-  onAddComments: PropTypes.func.isRequired,
-  onLoadCommentsFormData: PropTypes.bool.isRequired,
-  commentsFormError: PropTypes.string,
+  onLoadCommentsData: PropTypes.string.isRequired,
   match: PropTypes.object,
+  onUpdateFav: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -196,14 +191,9 @@ const mapStateToProps = (state) => ({
   onLoadNearOffersData: state.onLoadNearOffersData,
   comments: state.comments,
   onLoadCommentsData: state.onLoadCommentsData,
-  onLoadCommentsFormData: state.onLoadCommentsFormData,
-  commentsFormError: state.commentsFormError
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onAddComments(id, {rating, comment}) {
-    dispatch(addComments(id, {rating, comment}));
-  },
   onLoadOffer(id) {
     dispatch(fetchOffer(id));
   },
@@ -212,6 +202,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onLoadComments(id) {
     dispatch(fetchComments(id));
+  },
+  onUpdateFav(id, status) {
+    dispatch(updateFav(id, status));
   },
 });
 

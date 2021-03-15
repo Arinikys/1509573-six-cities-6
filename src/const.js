@@ -42,3 +42,10 @@ export const sortType = {
     label: `Top rated first`,
   },
 };
+
+export const loadStatus = {
+  IDLE: `IDLE`,
+  FETCHING: `FETCHING`,
+  SUCCESS: `SUCCESS`,
+  ERROR: `ERROR`,
+};

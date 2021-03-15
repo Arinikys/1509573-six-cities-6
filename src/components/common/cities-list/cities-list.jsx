@@ -13,7 +13,7 @@ const CitiesList = ({getActiveCity, activeCity}) => {
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
-        {cities.map((city, index) => <City key={`city-${index}`} city={city} isActiveCity={activeCity === city} onClick={handleCityClick} />)}
+        {cities.map((city) => <City key={city} city={city} isActiveCity={activeCity === city} onClick={handleCityClick} />)}
       </ul>
     </section>
   );

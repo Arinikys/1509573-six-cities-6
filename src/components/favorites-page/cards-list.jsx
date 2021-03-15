@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Card from './card';
 
 const CardsList = (props) => {
-  const {offers} = props;
+  const {offers, updateFav} = props;
   const unicCities = new Set();
-  offers.forEach(function(offer) {
+  offers.forEach(function (offer) {
     unicCities.add(offer.city.name);
   });
   const cities = Array.from(unicCities);
@@ -22,7 +22,7 @@ const CardsList = (props) => {
             </div>
           </div>
           <div className="favorites__places">
-            {[...offers].filter((offer) => offer.city.name === city).map((offer) => <Card key={offer.id} offer={offer}/>)}
+            {[...offers].filter((offer) => offer.city.name === city).map((offer) => <Card key={offer.id} offer={offer} onFavBtnClick={updateFav}/>)}
           </div>
         </li>
       ))}
@@ -33,6 +33,7 @@ const CardsList = (props) => {
 
 CardsList.propTypes = {
   offers: PropTypes.array.isRequired,
+  updateFav: PropTypes.func.isRequired,
 };
 
 export default CardsList;
