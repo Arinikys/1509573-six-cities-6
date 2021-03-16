@@ -13,6 +13,8 @@ export const AppRoute = {
 export const APIRoute = {
   OFFERS: `/hotels`,
   LOGIN: `/login`,
+  COMMENTS: `/comments`,
+  FAVORITES: `/favorite`,
 };
 
 export const AuthorizationStatus = {
@@ -39,4 +41,11 @@ export const sortType = {
     value: `RATE`,
     label: `Top rated first`,
   },
+};
+
+export const loadStatus = {
+  IDLE: `IDLE`,
+  FETCHING: `FETCHING`,
+  SUCCESS: `SUCCESS`,
+  ERROR: `ERROR`,
 };

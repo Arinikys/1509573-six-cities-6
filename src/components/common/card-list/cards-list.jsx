@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Card from './card';
 
 const CardsList = (props) => {
-  const {offers, getActiveCard} = props;
+  const {offers, getActiveCard, updateFav} = props;
   const [activeOffer, setActiveOffer] = React.useState({});
 
   const handleCardMouseOver = (offer) => {
@@ -12,7 +12,7 @@ const CardsList = (props) => {
   };
 
   return (<>
-    {offers.map((offer) => <Card key={offer.id} offer={offer} onMouseOver={handleCardMouseOver} />)}
+    {offers.map((offer) => <Card key={offer.id} offer={offer} onMouseOver={handleCardMouseOver} onFavBtnClick={updateFav}/>)}
   </>
   );
 };
@@ -20,6 +20,7 @@ const CardsList = (props) => {
 CardsList.propTypes = {
   offers: PropTypes.array.isRequired,
   getActiveCard: PropTypes.func.isRequired,
+  updateFav: PropTypes.func.isRequired,
 };
 
 export default CardsList;

@@ -1,20 +1,41 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from "prop-types";
 import ReviewForm from "./review-form";
 import ReviewList from "./review-list";
-import {useHistory} from "react-router-dom";
 import CardsList from "../common/card-list/cards-list";
 import Map from "../common/map/map";
-import {AppRoute} from "../../const";
+import Header from "../common/header/header";
+import {AuthorizationStatus, loadStatus} from "../../const";
+import {connect} from "react-redux";
+import {fetchOffer, fetchNearOffers, fetchComments, updateFav} from "../../store/api-actions";
+import LoadingScreen from "../loading-screen/loading-screen";
 
-const OfferPage = ({offer, offers, comments}) => {
-  const history = useHistory();
-  const nearOffers = offers.slice(0, 3);
-  const city = {
-    "latitude": 52.370216,
-    "longitude": 4.895168,
-    "zoom": 11
-  };
+const OfferPage = (props) => {
+  const {authorizationStatus, onLoadOffer, offer, onLoadOfferData} = props;
+  const {nearOffers, onLoadNearOffersData, onLoadNearOffers} = props;
+  const {comments, onLoadComments, onLoadCommentsData} = props;
+  const {onUpdateFav} = props;
+  const offerId = props.match.params.id;
+
+  useEffect(() => {
+    if (!onLoadOfferData) {
+      onLoadOffer(offerId);
+    }
+
+    if (!onLoadNearOffersData) {
+      onLoadNearOffers(offerId);
+    }
+
+    if (onLoadCommentsData !== loadStatus.SUCCESS) {
+      onLoadComments(offerId);
+    }
+  }, [onLoadOfferData, onLoadNearOffersData, onLoadCommentsData]);
+
+  if (!onLoadOfferData || !onLoadNearOffersData || !onLoadCommentsData) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (<>
     <div style={{display: `none`}}>
@@ -32,40 +53,12 @@ const OfferPage = ({offer, offers, comments}) => {
     </div>
 
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a
-                className="header__logo-link"
-                onClick={() => history.push(AppRoute.ROOT)}
-              >
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a
-                    className="header__nav-link header__nav-link--profile"
-                    onClick={() => history.push(AppRoute.LOGIN)}
-                  >
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__login">Sign in</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <Header />
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {offer.images.map((image, index) => (
+              {offer.images.slice(0, 6).map((image, index) => (
                 <div key={`image-${index}`} className="property__image-wrapper">
                   <img className="property__image" src={image} alt="Photo studio"/>
                 </div>
@@ -79,10 +72,18 @@ const OfferPage = ({offer, offers, comments}) => {
                 <h1 className="property__name">
                   {offer.title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
-                  <svg className="property__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"/>
-                  </svg>
+                <button className="property__bookmark-button button" type="button" onClick={(evt) => {
+                  evt.preventDefault();
+                  onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
+                }}>
+                  { offer.is_favorite
+                    ? <svg className="property__bookmark-icon" width="31" height="33" style={{stroke: `#4481c3`, fill: `#4481c3`}}>
+                      <use xlinkHref="#icon-bookmark"/>
+                    </svg>
+                    : <svg className="property__bookmark-icon" width="31" height="33" style = {{stroke: `#b8b8b8`, fill: `#fff`}}>
+                      <use xlinkHref="#icon-bookmark"/>
+                    </svg>
+                  }
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
               </div>
@@ -137,22 +138,27 @@ const OfferPage = ({offer, offers, comments}) => {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.slice(0, 10).length}</span></h2>
                 <ReviewList comments={comments} />
-                <ReviewForm />
+                { authorizationStatus === AuthorizationStatus.AUTH
+                  ? <ReviewForm/>
+                  : ``
+                }
               </section>
             </div>
           </div>
-          <section className="property__map map">
-            <Map city={city} points={nearOffers}/>
-          </section>
+        </section>
+
+
+        <section className="property__map map">
+          <Map points={nearOffers} activePoint={offer}/>
         </section>
 
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <CardsList offers={nearOffers} getActiveCard={() => {}}/>
+              <CardsList offers={nearOffers} getActiveCard={() => {}} updateFav={onUpdateFav} />
             </div>
           </section>
         </div>
@@ -163,8 +169,45 @@ const OfferPage = ({offer, offers, comments}) => {
 };
 
 OfferPage.propTypes = {
-  offer: PropTypes.object.isRequired,
-  offers: PropTypes.array.isRequired,
   comments: PropTypes.array.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
+  onLoadOffer: PropTypes.func.isRequired,
+  offer: PropTypes.object.isRequired,
+  onLoadOfferData: PropTypes.bool.isRequired,
+  onLoadNearOffersData: PropTypes.bool.isRequired,
+  onLoadNearOffers: PropTypes.func.isRequired,
+  nearOffers: PropTypes.array.isRequired,
+  onLoadComments: PropTypes.func.isRequired,
+  onLoadCommentsData: PropTypes.string.isRequired,
+  match: PropTypes.object,
+  onUpdateFav: PropTypes.func.isRequired
 };
-export default OfferPage;
+
+const mapStateToProps = (state) => ({
+  authorizationStatus: state.authorizationStatus,
+  offer: state.offer,
+  onLoadOfferData: state.onLoadOfferData,
+  nearOffers: state.nearOffers,
+  onLoadNearOffersData: state.onLoadNearOffersData,
+  comments: state.comments,
+  onLoadCommentsData: state.onLoadCommentsData,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onLoadOffer(id) {
+    dispatch(fetchOffer(id));
+  },
+  onLoadNearOffers(id) {
+    dispatch(fetchNearOffers(id));
+  },
+  onLoadComments(id) {
+    dispatch(fetchComments(id));
+  },
+  onUpdateFav(id, status) {
+    dispatch(updateFav(id, status));
+  },
+});
+
+
+export {OfferPage};
+export default connect(mapStateToProps, mapDispatchToProps)(OfferPage);
