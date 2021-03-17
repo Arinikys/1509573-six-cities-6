@@ -1,16 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 import {useHistory} from "react-router-dom";
 
 const Card = (props) => {
-  const {offer, onFavBtnClick} = props;
+  const {offer, onFavoriteButtonClick} = props;
   const history = useHistory();
-  const [favLabelState, setFavLabelState] = useState(offer.is_favorite);
-
-  const favBtnClickHandler = (state) => {
-    setFavLabelState(!state);
-    onFavBtnClick(offer.id, offer.is_favorite ? 0 : 1);
-  };
 
   return (
     <article className="favorites__card place-card">
@@ -30,7 +24,7 @@ const Card = (props) => {
             type="button"
             onClick={(evt) => {
               evt.preventDefault();
-              favBtnClickHandler(favLabelState);
+              onFavoriteButtonClick(offer.id, offer.is_favorite ? 0 : 1);
             }}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
@@ -56,6 +50,6 @@ const Card = (props) => {
 
 Card.propTypes = {
   offer: PropTypes.object.isRequired,
-  onFavBtnClick: PropTypes.func.isRequired,
+  onFavoriteButtonClick: PropTypes.func.isRequired,
 };
 export default Card;

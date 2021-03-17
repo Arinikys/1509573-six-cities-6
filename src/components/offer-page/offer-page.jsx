@@ -88,7 +88,7 @@ const OfferPage = (props) => {
                     evt.preventDefault();
                     onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
                   }}>
-                  <svg className="property__bookmark-icon" width="31" height="33" style={{stroke: `#4481c3`, fill: `#4481c3`}}>
+                  <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"/>
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>

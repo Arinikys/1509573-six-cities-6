@@ -33,7 +33,7 @@ const MainPage = (props) => {
     );
   }
 
-  const onFavBtnClick = (id, status) => {
+  const onFavoriteButtonClick = (id, status) => {
     onUpdateFav(id, status);
   };
 
@@ -68,7 +68,7 @@ const MainPage = (props) => {
                 <b className="places__found">{offers.length} aces to stay in {city}</b>
                 <Sort onSortTypeChange={onSortTypeSelect}/>
                 <div className="cities__places-list places__list tabs__content">
-                  <CardsList offers={offers} getActiveCard={onCardMouseOver} updateFav={onFavBtnClick}/>
+                  <CardsList offers={offers} getActiveCard={onCardMouseOver} updateFav={onFavoriteButtonClick}/>
                 </div>
               </section>
               <div className="cities__right-section">

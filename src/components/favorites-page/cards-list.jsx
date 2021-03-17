@@ -22,7 +22,7 @@ const CardsList = (props) => {
             </div>
           </div>
           <div className="favorites__places">
-            {[...offers].filter((offer) => offer.city.name === city).map((offer) => <Card key={offer.id} offer={offer} onFavBtnClick={updateFav}/>)}
+            {[...offers].filter((offer) => offer.city.name === city).map((offer) => <Card key={offer.id} offer={offer} onFavoriteButtonClick={updateFav}/>)}
           </div>
         </li>
       ))}

@@ -12,7 +12,7 @@ const CardsList = (props) => {
   };
 
   return (<>
-    {offers.map((offer) => <Card key={offer.id} offer={offer} onMouseOver={handleCardMouseOver} onFavBtnClick={updateFav}/>)}
+    {offers.map((offer) => <Card key={offer.id} offer={offer} onMouseOver={handleCardMouseOver} onFavoriteButtonClick={updateFav}/>)}
   </>
   );
 };

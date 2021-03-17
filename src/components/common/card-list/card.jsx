@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {useHistory} from "react-router-dom";
 
 const Card = (props) => {
-  const {offer, onMouseOver, onFavBtnClick} = props;
+  const {offer, onMouseOver, onFavoriteButtonClick} = props;
   const history = useHistory();
 
   return (
@@ -30,7 +30,7 @@ const Card = (props) => {
             className={`place-card__bookmark-button button ${offer.is_favorite ? `place-card__bookmark-button--active` : ``} `}
             type="button" onClick={(evt) => {
               evt.preventDefault();
-              onFavBtnClick(offer.id, offer.is_favorite ? 0 : 1);
+              onFavoriteButtonClick(offer.id, offer.is_favorite ? 0 : 1);
             }}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"/>
@@ -58,6 +58,6 @@ const Card = (props) => {
 Card.propTypes = {
   offer: PropTypes.object.isRequired,
   onMouseOver: PropTypes.func.isRequired,
-  onFavBtnClick: PropTypes.func.isRequired,
+  onFavoriteButtonClick: PropTypes.func.isRequired,
 };
 export default Card;
