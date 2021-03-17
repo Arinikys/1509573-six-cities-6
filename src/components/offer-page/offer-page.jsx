@@ -11,10 +11,19 @@ import {fetchOffer, fetchNearOffers, fetchComments, updateFav} from "../../store
 import LoadingScreen from "../loading-screen/loading-screen";
 
 const OfferPage = (props) => {
-  const {authorizationStatus, onLoadOffer, offer, onLoadOfferData} = props;
-  const {nearOffers, onLoadNearOffersData, onLoadNearOffers} = props;
-  const {comments, onLoadComments, onLoadCommentsData} = props;
-  const {onUpdateFav} = props;
+  const {
+    authorizationStatus,
+    onLoadOffer,
+    offer,
+    onLoadOfferData,
+    nearOffers,
+    onLoadNearOffersData,
+    onLoadNearOffers,
+    comments,
+    onLoadComments,
+    onLoadCommentsData,
+    onUpdateFav
+  } = props;
   const offerId = props.match.params.id;
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import Map from "../common/map/map";
 import LoadingScreen from "../loading-screen/loading-screen";
 import CitiesList from "../common/cities-list/cities-list";
 import Sort from "./sort";
+import MainEmpty from "./main-empty";
 import Header from "../common/header/header";
 import {ActionCreator} from "../../store/action";
 import {fetchOffersList, updateFav} from "../../store/api-actions";
@@ -50,7 +51,7 @@ const MainPage = (props) => {
         </symbol>
       </svg>
     </div>
-    <div className="page page--gray page--main">
+    <div className={`page page--gray page--main ${ offers.length <= 0 ? `page__main--index-empty` : ``}`}>
       <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
@@ -60,21 +61,24 @@ const MainPage = (props) => {
           </section>
         </div>
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} aces to stay in {city}</b>
-              <Sort onSortTypeChange={onSortTypeSelect}/>
-              <div className="cities__places-list places__list tabs__content">
-                <CardsList offers={offers} getActiveCard={onCardMouseOver} updateFav={onFavBtnClick}/>
-              </div>
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map points={offers} activeCardId={activeCardId}/>
+          { offers.length > 0
+            ? <div className="cities__places-container container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">{offers.length} aces to stay in {city}</b>
+                <Sort onSortTypeChange={onSortTypeSelect}/>
+                <div className="cities__places-list places__list tabs__content">
+                  <CardsList offers={offers} getActiveCard={onCardMouseOver} updateFav={onFavBtnClick}/>
+                </div>
               </section>
+              <div className="cities__right-section">
+                <section className="cities__map map">
+                  <Map points={offers} activeCardId={activeCardId}/>
+                </section>
+              </div>
             </div>
-          </div>
+            : <MainEmpty/>
+          }
         </div>
       </main>
     </div>
