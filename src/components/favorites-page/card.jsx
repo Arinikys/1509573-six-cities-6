@@ -26,21 +26,16 @@ const Card = (props) => {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            className={`place-card__bookmark-button ${offer.is_favorite ? `place-card__bookmark-button--active` : ``} button`}
             type="button"
             onClick={(evt) => {
               evt.preventDefault();
               favBtnClickHandler(favLabelState);
             }}
           >
-            {offer.is_favorite && favLabelState
-              ? <svg className="place-card__bookmark-icon" width="18" height="19" style={{stroke: `#4481c3`, fill: `#4481c3`}}>
-                <use xlinkHref="#icon-bookmark"/>
-              </svg>
-              : <svg className="place-card__bookmark-icon" width="18" height="19" style = {{stroke: `#b8b8b8`, fill: `#fff`}}>
-                <use xlinkHref="#icon-bookmark"/>
-              </svg>
-            }
+            <svg className="place-card__bookmark-icon" width="18" height="19">
+              <use xlinkHref="#icon-bookmark"/>
+            </svg>
             <span className="visually-hidden">In bookmarks</span>
           </button>
         </div>

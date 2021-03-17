@@ -26,18 +26,15 @@ const Card = (props) => {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button" onClick={(evt) => {
-            evt.preventDefault();
-            onFavBtnClick(offer.id, offer.is_favorite ? 0 : 1);
-          }}>
-            {offer.is_favorite
-              ? <svg className="place-card__bookmark-icon" width="18" height="19" style={{stroke: `#4481c3`, fill: `#4481c3`}}>
-                <use xlinkHref="#icon-bookmark"/>
-              </svg>
-              : <svg className="place-card__bookmark-icon" width="18" height="19" style = {{stroke: `#b8b8b8`, fill: `#fff`}}>
-                <use xlinkHref="#icon-bookmark"/>
-              </svg>
-            }
+          <button
+            className={`place-card__bookmark-button button ${offer.is_favorite ? `place-card__bookmark-button--active` : ``} `}
+            type="button" onClick={(evt) => {
+              evt.preventDefault();
+              onFavBtnClick(offer.id, offer.is_favorite ? 0 : 1);
+            }}>
+            <svg className="place-card__bookmark-icon" width="18" height="19">
+              <use xlinkHref="#icon-bookmark"/>
+            </svg>
             <span className="visually-hidden">To bookmarks</span>
           </button>
         </div>

@@ -81,18 +81,16 @@ const OfferPage = (props) => {
                 <h1 className="property__name">
                   {offer.title}
                 </h1>
-                <button className="property__bookmark-button button" type="button" onClick={(evt) => {
-                  evt.preventDefault();
-                  onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
-                }}>
-                  { offer.is_favorite
-                    ? <svg className="property__bookmark-icon" width="31" height="33" style={{stroke: `#4481c3`, fill: `#4481c3`}}>
-                      <use xlinkHref="#icon-bookmark"/>
-                    </svg>
-                    : <svg className="property__bookmark-icon" width="31" height="33" style = {{stroke: `#b8b8b8`, fill: `#fff`}}>
-                      <use xlinkHref="#icon-bookmark"/>
-                    </svg>
-                  }
+                <button
+                  className={`property__bookmark-button button ${offer.is_favorite ? `property__bookmark-button--active` : ``}`}
+                  type="button"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
+                  }}>
+                  <svg className="property__bookmark-icon" width="31" height="33" style={{stroke: `#4481c3`, fill: `#4481c3`}}>
+                    <use xlinkHref="#icon-bookmark"/>
+                  </svg>
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
               </div>
