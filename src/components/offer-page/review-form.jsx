@@ -5,6 +5,8 @@ import {connect} from "react-redux";
 import {addComments} from "../../store/api-actions";
 import {loadStatus} from "../../const";
 import {ActionCreator} from "../../store/action";
+import {getCommentsFormError, getOnLoadCommentsFormData} from "../../store/comments/selectors";
+import {getOffer} from "../../store/offer/selectors";
 
 const ReviewForm = ({onAddComments, commentsFormError, offer, onLoadCommentsFormData}) => {
 
@@ -73,9 +75,9 @@ ReviewForm.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  commentsFormError: state.commentsFormError,
-  offer: state.offer,
-  onLoadCommentsFormData: state.onLoadCommentsFormData,
+  commentsFormError: getCommentsFormError(state),
+  offer: getOffer(state),
+  onLoadCommentsFormData: getOnLoadCommentsFormData(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -10,6 +10,8 @@ import MainEmpty from "./main-empty";
 import Header from "../common/header/header";
 import {ActionCreator} from "../../store/action";
 import {fetchOffersList, updateFav} from "../../store/api-actions";
+import {getUser, getAuthorizationStatus} from "../../store/user/selectors";
+import {getOffers, getCity, getIsDataLoaded} from "../../store/offers/selectors";
 
 const MainPage = (props) => {
   const {offers, onCitySelect, city, isDataLoaded, onLoadData, onSortTypeSelect, onUpdateFav} = props;
@@ -99,11 +101,11 @@ MainPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  offers: state.offers,
-  city: state.city,
-  isDataLoaded: state.isDataLoaded,
-  authorizationStatus: state.authorizationStatus,
-  user: state.user
+  offers: getOffers(state),
+  city: getCity(state),
+  isDataLoaded: getIsDataLoaded(state),
+  authorizationStatus: getAuthorizationStatus(state),
+  user: getUser(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

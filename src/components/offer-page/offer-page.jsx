@@ -9,6 +9,9 @@ import {AuthorizationStatus, loadStatus} from "../../const";
 import {connect} from "react-redux";
 import {fetchOffer, fetchNearOffers, fetchComments, updateFav} from "../../store/api-actions";
 import LoadingScreen from "../loading-screen/loading-screen";
+import {getAuthorizationStatus} from "../../store/user/selectors";
+import {getComments, getOnLoadCommentsData} from "../../store/comments/selectors";
+import {getOffer, getNearOffers, getOnLoadOfferData, getOnLoadNearOffersData} from "../../store/offer/selectors";
 
 const OfferPage = (props) => {
   const {
@@ -191,13 +194,13 @@ OfferPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  offer: state.offer,
-  onLoadOfferData: state.onLoadOfferData,
-  nearOffers: state.nearOffers,
-  onLoadNearOffersData: state.onLoadNearOffersData,
-  comments: state.comments,
-  onLoadCommentsData: state.onLoadCommentsData,
+  authorizationStatus: getAuthorizationStatus(state),
+  offer: getOffer(state),
+  onLoadOfferData: getOnLoadOfferData(state),
+  nearOffers: getNearOffers(state),
+  onLoadNearOffersData: getOnLoadNearOffersData(state),
+  comments: getComments(state),
+  onLoadCommentsData: getOnLoadCommentsData(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

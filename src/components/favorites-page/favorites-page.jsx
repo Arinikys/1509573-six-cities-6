@@ -4,6 +4,7 @@ import CardsList from './cards-list';
 import Header from "../common/header/header";
 import {connect} from "react-redux";
 import {fetchFavOffersList, updateFav} from "../../store/api-actions";
+import {getFavOffers, getOnLoadFavOfferData} from "../../store/favorites/selectors";
 
 const FavoritesPage = (props) => {
   const {favOffers, onLoadFavOfferData, onLoadFavOffers, onUpdateFav} = props;
@@ -69,8 +70,8 @@ FavoritesPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  favOffers: state.favOffers,
-  onLoadFavOfferData: state.onLoadFavOfferData
+  favOffers: getFavOffers(state),
+  onLoadFavOfferData: getOnLoadFavOfferData(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
