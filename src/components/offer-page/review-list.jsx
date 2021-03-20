@@ -20,4 +20,4 @@ ReviewList.propTypes = {
   comments: PropTypes.array.isRequired,
 };
 
-export default ReviewList;
+export default React.memo(ReviewList);
