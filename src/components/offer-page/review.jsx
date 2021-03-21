@@ -32,4 +32,4 @@ Review.propTypes = {
   comment: PropTypes.object.isRequired,
 };
 
-export default Review;
+export default React.memo(Review);

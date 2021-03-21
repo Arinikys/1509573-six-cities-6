@@ -52,4 +52,6 @@ Sort.propTypes = {
   onSortTypeChange: PropTypes.func.isRequired
 };
 
-export default Sort;
+export default React.memo(Sort, (prevProps, nextProps) => {
+  return prevProps.onSortTypeChange === nextProps.onSortTypeChange;
+});

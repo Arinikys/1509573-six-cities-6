@@ -9,12 +9,24 @@ import {AuthorizationStatus, loadStatus} from "../../const";
 import {connect} from "react-redux";
 import {fetchOffer, fetchNearOffers, fetchComments, updateFav} from "../../store/api-actions";
 import LoadingScreen from "../loading-screen/loading-screen";
+import {getAuthorizationStatus} from "../../store/user/selectors";
+import {getComments, getOnLoadCommentsData} from "../../store/comments/selectors";
+import {getOffer, getNearOffers, getOnLoadOfferData, getOnLoadNearOffersData} from "../../store/offer/selectors";
 
 const OfferPage = (props) => {
-  const {authorizationStatus, onLoadOffer, offer, onLoadOfferData} = props;
-  const {nearOffers, onLoadNearOffersData, onLoadNearOffers} = props;
-  const {comments, onLoadComments, onLoadCommentsData} = props;
-  const {onUpdateFav} = props;
+  const {
+    authorizationStatus,
+    onLoadOffer,
+    offer,
+    onLoadOfferData,
+    nearOffers,
+    onLoadNearOffersData,
+    onLoadNearOffers,
+    comments,
+    onLoadComments,
+    onLoadCommentsData,
+    onUpdateFav
+  } = props;
   const offerId = props.match.params.id;
 
   useEffect(() => {
@@ -72,18 +84,16 @@ const OfferPage = (props) => {
                 <h1 className="property__name">
                   {offer.title}
                 </h1>
-                <button className="property__bookmark-button button" type="button" onClick={(evt) => {
-                  evt.preventDefault();
-                  onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
-                }}>
-                  { offer.is_favorite
-                    ? <svg className="property__bookmark-icon" width="31" height="33" style={{stroke: `#4481c3`, fill: `#4481c3`}}>
-                      <use xlinkHref="#icon-bookmark"/>
-                    </svg>
-                    : <svg className="property__bookmark-icon" width="31" height="33" style = {{stroke: `#b8b8b8`, fill: `#fff`}}>
-                      <use xlinkHref="#icon-bookmark"/>
-                    </svg>
-                  }
+                <button
+                  className={`property__bookmark-button button ${offer.is_favorite ? `property__bookmark-button--active` : ``}`}
+                  type="button"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
+                  }}>
+                  <svg className="property__bookmark-icon" width="31" height="33">
+                    <use xlinkHref="#icon-bookmark"/>
+                  </svg>
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
               </div>
@@ -184,13 +194,13 @@ OfferPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  offer: state.offer,
-  onLoadOfferData: state.onLoadOfferData,
-  nearOffers: state.nearOffers,
-  onLoadNearOffersData: state.onLoadNearOffersData,
-  comments: state.comments,
-  onLoadCommentsData: state.onLoadCommentsData,
+  authorizationStatus: getAuthorizationStatus(state),
+  offer: getOffer(state),
+  onLoadOfferData: getOnLoadOfferData(state),
+  nearOffers: getNearOffers(state),
+  onLoadNearOffersData: getOnLoadNearOffersData(state),
+  comments: getComments(state),
+  onLoadCommentsData: getOnLoadCommentsData(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

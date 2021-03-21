@@ -29,4 +29,4 @@ Star.propTypes = {
   index: PropTypes.number.isRequired,
 };
 
-export default Star;
+export default React.memo(Star);

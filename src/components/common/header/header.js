@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {AppRoute, AuthorizationStatus} from "../../../const";
 import {useHistory} from 'react-router-dom';
 import {connect} from "react-redux";
+import {getUser, getAuthorizationStatus} from "../../../store/user/selectors";
 
 const Header = ({authorizationStatus, user}) => {
   const history = useHistory();
@@ -53,8 +54,8 @@ Header.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  authorizationStatus: state.authorizationStatus,
-  user: state.user
+  authorizationStatus: getAuthorizationStatus(state),
+  user: getUser(state)
 });
 
 export {Header};
