@@ -14,6 +14,7 @@ const user = (state = initialState, action) => {
         authorizationStatus: action.payload,
       };
     case ActionType.CHECK_AUTHORIZATION:
+      console.log(`CHECK_AUTHORIZATION`, action.payload)
       return {
         ...state,
         user: action.payload.data,

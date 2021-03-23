@@ -8,7 +8,6 @@ export const ActionType = {
   REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
   CHECK_AUTHORIZATION: `user/checkAuthorization`,
   REDIRECT_TO_ROUTE: `sixCities/redirectToRoute`,
-  GET_CREDENTIALS: `user/getCredentials`,
   SORT_OFFERS: `sixCities/sortOffers`,
   ADD_COMMENTS: `sixCities/addComments`,
   ADD_COMMENTS_FAIL: `sixCities/addCommentsFail`,
@@ -53,9 +52,9 @@ export const ActionCreator = {
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status,
   }),
-  checkAuthorization: (status) => ({
+  checkAuthorization: (response) => ({
     type: ActionType.CHECK_AUTHORIZATION,
-    payload: status,
+    payload: response,
   }),
   redirectToRoute: (url) => ({
     type: ActionType.REDIRECT_TO_ROUTE,
@@ -77,3 +76,4 @@ export const ActionCreator = {
     payload: response,
   })
 };
+

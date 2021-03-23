@@ -35,7 +35,7 @@ export const addComments = (id, {rating, comment}) => (dispatch, _getState, api)
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(APIRoute.LOGIN)
-    .then((response) => dispatch(ActionCreator.checkAuthorization(response)))
+    .then(({data, status}) => dispatch(ActionCreator.checkAuthorization({data, status})))
     .catch(() => {})
 );
 
