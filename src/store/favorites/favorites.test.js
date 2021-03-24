@@ -3,7 +3,7 @@ import {createAPI} from '../../services/api';
 import {favorites} from './favorites';
 import {ActionType} from '../action';
 import {updateFav, fetchFavOffersList} from '../api-actions';
-import {APIRoute} from '../../const';
+import {APIRoute, AppRoute} from '../../const';
 
 const api = createAPI(() => {});
 const favOffers = [
@@ -108,8 +108,8 @@ describe(`Async operation work correctly`, () => {
       .then(() => {
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.UPDATE_FAV,
-          payload: [{fake: true}],
+          type: ActionType.REDIRECT_TO_ROUTE,
+          payload: AppRoute.LOGIN,
         });
       });
   });
