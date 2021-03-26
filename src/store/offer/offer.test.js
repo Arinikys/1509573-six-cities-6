@@ -134,24 +134,24 @@ describe(`Async operation work correctly`, () => {
       });
   });
 
-  // it(`Should make a correct API call to /hotel/1/nearby`, () => {
-  //   const id = 1;
-  //
-  //   const apiMock = new MockAdapter(api);
-  //   apiMock
-  //     .onGet(`${APIRoute.OFFERS}/${id}/nearby`)
-  //     .reply(200, [{fake: true}]);
-  //
-  //   const dispatch = jest.fn();
-  //   const nearOfferListLoader = fetchNearOffers(id);
-  //
-  //   return nearOfferListLoader(dispatch, () => {}, api)
-  //     .then(() => {
-  //       expect(dispatch).toHaveBeenCalledTimes(1);
-  //       expect(dispatch).toHaveBeenNthCalledWith(1, {
-  //         type: ActionType.LOAD_NEAR_OFFERS,
-  //         payload: [{fake: true}],
-  //       });
-  //     });
-  // });
+  it(`Should make a correct API call to /hotel/1/nearby`, () => {
+    const id = 1;
+
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet(`${APIRoute.OFFERS}/${id}/nearby`)
+      .reply(200, [{fake: true}]);
+
+    const dispatch = jest.fn();
+    const nearOfferListLoader = fetchNearOffers(id);
+
+    return nearOfferListLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.LOAD_NEAR_OFFERS,
+          payload: [{fake: true}],
+        });
+      });
+  });
 });

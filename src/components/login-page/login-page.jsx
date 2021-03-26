@@ -54,6 +54,7 @@ const LoginPage = ({onSubmit}) => {
                   ref={loginRef}
                   id="email"
                   autoComplete="on"
+                  data-testid="email"
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -67,6 +68,7 @@ const LoginPage = ({onSubmit}) => {
                   ref={passwordRef}
                   id="password"
                   autoComplete="on"
+                  data-testid="password"
                 />
               </div>
               <button

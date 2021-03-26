@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+// import {createSelector} from 'reselect';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import CardsList from "../common/card-list/cards-list";
