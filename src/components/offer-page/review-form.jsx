@@ -45,6 +45,7 @@ const ReviewForm = ({onAddComments, commentsFormError, offer, onLoadCommentsForm
           minLength="50"
           maxLength="300"
           required
+          data-testid="comment"
           placeholder="Tell how was your stay, what you like and what can be improved"
         />
         { commentsFormError !== ``
