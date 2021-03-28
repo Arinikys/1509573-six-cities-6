@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import {useHistory} from "react-router-dom";
 
 const Card = (props) => {
   const {offer, onMouseOver, onFavoriteButtonClick} = props;
   const history = useHistory();
+  const [favoriteLabel, setFavoriteLabel] = useState(offer.is_favorite);
 
   return (
     <article
@@ -27,9 +28,10 @@ const Card = (props) => {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={`place-card__bookmark-button button ${offer.is_favorite ? `place-card__bookmark-button--active` : ``} `}
+            className={`place-card__bookmark-button button ${offer.is_favorite && favoriteLabel ? `place-card__bookmark-button--active` : ``} `}
             type="button" onClick={(evt) => {
               evt.preventDefault();
+              setFavoriteLabel(!favoriteLabel);
               onFavoriteButtonClick(offer.id, offer.is_favorite ? 0 : 1);
             }}>
             <svg className="place-card__bookmark-icon" width="18" height="19">

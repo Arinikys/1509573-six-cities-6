@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import CardsList from './cards-list';
 import Header from "../common/header/header";
@@ -8,6 +8,7 @@ import {getFavOffers, getOnLoadFavOfferData} from "../../store/favorites/selecto
 
 const FavoritesPage = (props) => {
   const {favOffers, onLoadFavOfferData, onLoadFavOffers, onUpdateFav} = props;
+
   useEffect(() => {
     if (!onLoadFavOfferData) {
       onLoadFavOffers();
