@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import ReviewForm from "./review-form";
 import ReviewList from "./review-list";
@@ -28,6 +28,7 @@ const OfferPage = (props) => {
     onUpdateFav
   } = props;
   const offerId = props.match.params.id;
+  const [favoriteLabel, setFavoriteLabel] = useState(offer.is_favorite);
 
   useEffect(() => {
     if (!onLoadOfferData) {
@@ -85,10 +86,11 @@ const OfferPage = (props) => {
                   {offer.title}
                 </h1>
                 <button
-                  className={`property__bookmark-button button ${offer.is_favorite ? `property__bookmark-button--active` : ``}`}
+                  className={`property__bookmark-button button ${offer.is_favorite && favoriteLabel ? `property__bookmark-button--active` : ``}`}
                   type="button"
                   onClick={(evt) => {
                     evt.preventDefault();
+                    setFavoriteLabel(!favoriteLabel);
                     onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
                   }}>
                   <svg className="property__bookmark-icon" width="31" height="33">

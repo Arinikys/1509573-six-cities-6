@@ -8,6 +8,7 @@ import {getFavOffers, getOnLoadFavOfferData} from "../../store/favorites/selecto
 
 const FavoritesPage = (props) => {
   const {favOffers, onLoadFavOfferData, onLoadFavOffers, onUpdateFav} = props;
+
   useEffect(() => {
     if (!onLoadFavOfferData) {
       onLoadFavOffers();
