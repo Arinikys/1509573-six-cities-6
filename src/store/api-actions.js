@@ -18,7 +18,7 @@ export const fetchOffer = (id) => (dispatch, _getState, api) => (
 );
 
 export const fetchNearOffers = (id) => (dispatch, _getState, api) => (
-  api.get(`${APIRoute.OFFERS}/${id}/nearby`)
+  api.get(`${APIRoute.OFFERS}/${id}${AppRoute.NEARBY}`)
     .then(({data}) => dispatch(ActionCreator.loadNearOffers(data)))
 );
 

@@ -8,6 +8,7 @@ export const AppRoute = {
   OFFER: `/offer`,
   ROOT: `/`,
   FAVORITES: `/favorites`,
+  NEARBY: `/nearby`,
 };
 
 export const APIRoute = {

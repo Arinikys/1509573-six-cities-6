@@ -3,25 +3,28 @@ import PropTypes from "prop-types";
 import {useHistory} from "react-router-dom";
 
 const Card = (props) => {
-  const {offer, onMouseOver, onFavoriteButtonClick} = props;
+  const {offer, onMouseOver, onFavoriteButtonClick, cardClass} = props;
   const history = useHistory();
   const [favoriteLabel, setFavoriteLabel] = useState(offer.is_favorite);
 
   return (
     <article
-      className="cities__place-card place-card"
+      className={`${cardClass === `favorites` ? `favorites__card` : `cities__place-card`} place-card`}
       onMouseOver={(evt) => {
         evt.preventDefault();
         onMouseOver(offer.id);
       }}
     >
       {offer.is_premium ? <div className="place-card__mark"><span>Premium</span></div> : ``}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${cardClass || `cities`}__image-wrapper place-card__image-wrapper`}>
         <a onClick={() => history.push(`/offer/${offer.id}`)}>
-          <img className="place-card__image" src={offer.images[0]} width="260" height="200" alt="Place image"/>
+          {cardClass === `favorites`
+            ? <img className="place-card__image" src={offer.images[0]} width="150" height="110" alt="Place image"/>
+            : <img className="place-card__image" src={offer.images[0]} width="260" height="200" alt="Place image"/>
+          }
         </a>
       </div>
-      <div className="place-card__info">
+      <div className={`${cardClass || `cities`}__card-info place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{offer.price}</b>
@@ -61,5 +64,6 @@ Card.propTypes = {
   offer: PropTypes.object.isRequired,
   onMouseOver: PropTypes.func.isRequired,
   onFavoriteButtonClick: PropTypes.func.isRequired,
+  cardClass: PropTypes.string
 };
 export default Card;

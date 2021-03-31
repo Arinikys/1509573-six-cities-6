@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from './card';
+import Card from "../common/card-list/card";
 
 const CardsList = (props) => {
   const {offers, updateFav} = props;
@@ -22,7 +22,7 @@ const CardsList = (props) => {
             </div>
           </div>
           <div className="favorites__places">
-            {[...offers].filter((offer) => offer.city.name === city).map((offer) => <Card key={offer.id} offer={offer} onFavoriteButtonClick={updateFav}/>)}
+            {[...offers].filter((offer) => offer.city.name === city).map((offer) => <Card key={offer.id} cardClass={`favorites`} offer={offer} onFavoriteButtonClick={updateFav}/>)}
           </div>
         </li>
       ))}
