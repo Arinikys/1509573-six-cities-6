@@ -91,7 +91,7 @@ const OfferPage = (props) => {
                   onClick={(evt) => {
                     evt.preventDefault();
                     setFavoriteLabel(!favoriteLabel);
-                    onUpdateFav(offer.id, offer.is_favorite ? 0 : 1);
+                    onUpdateFav(offer.id, favoriteLabel ? 0 : 1);
                   }}>
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"/>

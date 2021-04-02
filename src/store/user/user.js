@@ -11,7 +11,8 @@ const user = (state = initialState, action) => {
     case ActionType.REQUIRED_AUTHORIZATION:
       return {
         ...state,
-        authorizationStatus: action.payload,
+        user: action.payload.data,
+        authorizationStatus: action.payload.status === 200 ? AuthorizationStatus.AUTH : AuthorizationStatus.NO_AUTH,
       };
     case ActionType.CHECK_AUTHORIZATION:
       return {

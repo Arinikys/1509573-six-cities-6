@@ -35,7 +35,7 @@ const Card = (props) => {
             type="button" onClick={(evt) => {
               evt.preventDefault();
               setFavoriteLabel(!favoriteLabel);
-              onFavoriteButtonClick(offer.id, offer.is_favorite ? 0 : 1);
+              onFavoriteButtonClick(offer.id, favoriteLabel ? 0 : 1);
             }}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"/>

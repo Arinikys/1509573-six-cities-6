@@ -17,7 +17,7 @@ describe(`Reducer 'user' should work correctly`, () => {
     const state = {authorizationStatus: AuthorizationStatus.NO_AUTH};
     const requiredAuthorizationAction = {
       type: ActionType.REQUIRED_AUTHORIZATION,
-      payload: AuthorizationStatus.AUTH
+      payload: {status: 200}
     };
 
     expect(user(state, requiredAuthorizationAction))
@@ -69,7 +69,7 @@ describe(`Async operation work correctly`, () => {
 
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.REQUIRED_AUTHORIZATION,
-          payload: AuthorizationStatus.AUTH,
+          payload: {status: 200, data: [{fake: true}]},
         });
 
         expect(dispatch).toHaveBeenNthCalledWith(2, {
